@@ -49,12 +49,16 @@ dependencies:
   # storage
   shared_preferences: ^2.2.3
   # log
-  talker: ^3.2.0
-  talker_flutter: ^3.2.0
+  talker: ^4.4.0
+  talker_flutter: ^4.4.0
+  talker_dio_logger: 4.4.0
+  talker_riverpod_logger: ^4.4.0
   # assets
   lottie: ^3.1.2
   flutter_gen: ^5.7.0
   flutter_svg: ^2.0.10+1
+  flutter_launcher_icons: ^0.13.1
+
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +68,7 @@ dev_dependencies:
   retrofit_generator: ^8.1.2
   flutter_gen_runner: ^5.7.0
   flutter_lints: ^2.0.0
+  msix: ^3.16.8
 
 flutter_gen:
   output: lib/resource/
@@ -93,6 +98,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/icon/
     - assets/image/
     - assets/lottie/
 
@@ -121,3 +127,22 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+# 执行命令：flutter pub run flutter_launcher_icons
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.jpg"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/icon.jpg"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/icon/icon.jpg"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icon/icon.jpg"
+

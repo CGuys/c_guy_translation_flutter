@@ -1,6 +1,9 @@
 import 'package:c_guy_translation_flutter/api/interceptors/error_global_toast_interceptor.dart';
 import 'package:c_guy_translation_flutter/global/config.dart';
+import 'package:c_guy_translation_flutter/log/log.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 /**
  * @Author Cheng Pan
@@ -28,17 +31,17 @@ class CGService {
     dio.interceptors.add(ErrorGlobalToastInterceptor());
     // dio.interceptors.add(TokenInterceptor());
     dio.options.contentType = Headers.jsonContentType;
-    // dio.interceptors.add(
-    //   TalkerDioLogger(
-    //     talker: talker,
-    //     settings: const TalkerDioLoggerSettings(
-    //       printRequestHeaders: kDebugMode,
-    //       printResponseHeaders: true,
-    //       printRequestData: true,
-    //       printResponseData: true,
-    //     ),
-    //   ),
-    // );
+    dio.interceptors.add(
+      TalkerDioLogger(
+        talker: talker,
+        settings: const TalkerDioLoggerSettings(
+          printRequestHeaders: kDebugMode,
+          printResponseHeaders: true,
+          printRequestData: true,
+          printResponseData: true,
+        ),
+      ),
+    );
   }
 
   static Dio dio() => _instance._dio;

@@ -1,5 +1,6 @@
 import 'package:c_guy_translation_flutter/component/home_body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**
  * @Author Cheng Pan
@@ -10,9 +11,26 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFFF7F8FA),
-      body: HomeBody(),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF7F8FA),
+      body: Stack(
+        children: [
+          const HomeBody(),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: InkWell(
+              onTap: () => SystemNavigator.pop(),
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
+              child: const SizedBox(
+                width: 50,
+                height: 50,
+                child: Icon(Icons.close_rounded),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -29,9 +29,10 @@ void main() {
       windowManager.waitUntilReadyToShow().then((_) async {
         await windowManager.ensureInitialized();
         await windowManager.setTitleBarStyle(
-          TitleBarStyle.normal,
+          TitleBarStyle.hidden,
           windowButtonVisibility: true,
         );
+        await windowManager.setBackgroundColor(Colors.transparent);
         await windowManager.setMinimumSize(const Size(500, 600));
         await windowManager.show();
         await windowManager.setSkipTaskbar(false);

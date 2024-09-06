@@ -19,14 +19,37 @@ class HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBody> {
   final _textController = TextEditingController();
-  var _translationText = '';
+  var _translationText = '译文';
   final CancelToken _cancelToken = CancelToken();
   var _loadingStatus = LoadStatus.success;
+  var _sourceLanguages = 'zh-Hans';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _textController.addListener(() {
+      final text = _textController.text;
+      if (text.isNotEmpty) {
+        _fetchSourceLanguages(text);
+      }
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
     _cancelToken.cancel();
     super.dispose();
+  }
+
+  // 获取源语言
+  void _fetchSourceLanguages(String text) async {
+    final service = TranslationRemoteService(CGService.dio());
+    final res = await service.api.fetchSourceLanguages(text, _cancelToken);
+    if (res.code == 200) {
+      _sourceLanguages = res.data ?? '';
+      setState(() {});
+    }
   }
 
   // 翻译文本
@@ -40,7 +63,7 @@ class _HomeBodyState extends State<HomeBody> {
         TranslationDataRequest(
           translateLanguage: 'en',
           text: [_textController.text],
-          from: 'zh-Hans',
+          from: _sourceLanguages,
         ),
         _cancelToken,
       );
@@ -62,12 +85,36 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          height: 50,
+          alignment: Alignment.center,
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              CgAssets.icon.icon.image(
+                width: 40,
+                height: 40,
+              ),
+              const Text(
+                'C-Guy Translation',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purple,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Stack(
             alignment: Alignment.center,
             children: [
               Row(
@@ -101,9 +148,24 @@ class _HomeBodyState extends State<HomeBody> {
               )
             ],
           ),
-          // _buildButton(),
-        ],
-      ),
+        ),
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(16),
+            color: Colors.white,
+            child: const Text(
+              '欢迎使用C佬翻译器',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.purple,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -116,14 +178,20 @@ class _HomeBodyState extends State<HomeBody> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: TextField(
-        controller: _textController,
-        maxLines: null,
-        decoration: const InputDecoration(
-          hintText: 'Enter text here',
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.zero,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildDropdown(),
+          TextField(
+            controller: _textController,
+            maxLines: null,
+            decoration: const InputDecoration(
+              hintText: '输入文本内容',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.zero,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -150,6 +218,7 @@ class _HomeBodyState extends State<HomeBody> {
 
   Widget _buildDropdown() {
     return DropdownButton<String>(
+      value: 'English',
       items: const [
         DropdownMenuItem(
           value: 'English',
