@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:c_guy_translation_flutter/page/main_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
+import 'package:window_manager/window_manager.dart';
 
 bool get isDesktop {
   if (kIsWeb) return false;
@@ -27,11 +27,13 @@ void main() {
     if (isDesktop) {
       await flutter_acrylic.Window.initialize();
       windowManager.waitUntilReadyToShow().then((_) async {
+        await windowManager.setBackgroundColor(Colors.transparent);
         await windowManager.ensureInitialized();
         await windowManager.setTitleBarStyle(
           TitleBarStyle.hidden,
-          windowButtonVisibility: true,
+          windowButtonVisibility: false,
         );
+        await windowManager.center();
         await windowManager.setBackgroundColor(Colors.transparent);
         await windowManager.setMinimumSize(const Size(500, 600));
         await windowManager.show();

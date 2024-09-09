@@ -17,12 +17,13 @@ class HomeBody extends StatefulWidget {
   State<HomeBody> createState() => _HomeBodyState();
 }
 
-class _HomeBodyState extends State<HomeBody> {
+class _HomeBodyState extends State<HomeBody> with SingleTickerProviderStateMixin {
   final _textController = TextEditingController();
   var _translationText = '译文';
   final CancelToken _cancelToken = CancelToken();
   var _loadingStatus = LoadStatus.success;
   var _sourceLanguages = 'zh-Hans';
+  late final _tabController = TabController(length: 2, vsync: this);
 
   @override
   void initState() {
@@ -113,6 +114,27 @@ class _HomeBodyState extends State<HomeBody> {
           ),
         ),
         Container(
+          margin: const EdgeInsets.only(top: 10),
+          child: Container(
+            width: 300,
+            decoration: BoxDecoration(
+                color: const Color(0xFFF7F8FA),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey, width: 0.5)),
+            child: TabBar(
+              controller: _tabController,
+              indicator: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              tabs: const [
+                Text('中文'),
+                Text('英文'),
+              ],
+            ),
+          ),
+        ),
+        Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Stack(
             alignment: Alignment.center,
@@ -172,33 +194,37 @@ class _HomeBodyState extends State<HomeBody> {
   Widget _buildTextField() {
     return Container(
       width: double.infinity,
-      height: 400,
+      height: 500,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDropdown(),
-          TextField(
-            controller: _textController,
-            maxLines: null,
-            decoration: const InputDecoration(
-              hintText: '输入文本内容',
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
-            ),
+      child: TextField(
+        controller: _textController,
+        maxLines: 5,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.purple,
+        ),
+        decoration: const InputDecoration(
+          hintText: '输入文本内容',
+          hintStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
           ),
-        ],
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.zero,
+        ),
       ),
     );
   }
 
   Widget _buildText() {
     return Container(
-      height: 400,
+      height: 500,
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

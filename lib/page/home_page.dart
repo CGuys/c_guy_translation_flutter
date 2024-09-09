@@ -1,6 +1,6 @@
 import 'package:c_guy_translation_flutter/component/home_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:window_manager/window_manager.dart';
 
 /**
  * @Author Cheng Pan
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
             top: 0,
             right: 0,
             child: InkWell(
-              onTap: () => SystemNavigator.pop(),
+              onTap: () => windowManager.close(),
               overlayColor: MaterialStateProperty.all(Colors.transparent),
               child: const SizedBox(
                 width: 50,
